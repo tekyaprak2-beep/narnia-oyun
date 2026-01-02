@@ -2,108 +2,82 @@
 <html lang="tr">
 <head>
 <meta charset="UTF-8">
-<title>Narnia’ya Açılan Kapı</title>
+<title>Naz ve Buz Denizi</title>
 <style>
-    body {
-        margin: 0;
-        font-family: 'Trebuchet MS', sans-serif;
-        background: linear-gradient(#0b1d3a, #1e3c72);
-        color: white;
-        text-align: center;
-        overflow: hidden;
-    }
-    h1 {
-        margin-top: 40px;
-    }
-    #wardrobe {
-        width: 180px;
-        height: 260px;
-        margin: 50px auto;
-        background: #6b3e26;
-        border: 6px solid #3b1f12;
-        border-radius: 10px;
-        cursor: pointer;
-        position: relative;
-        box-shadow: 0 0 20px rgba(255,255,255,0.2);
-    }
-    #wardrobe::after {
-        content: "🚪";
-        font-size: 100px;
-        position: absolute;
-        top: 60px;
-        left: 40px;
-    }
-    .snow {
-        position: absolute;
-        top: -10px;
-        color: white;
-        font-size: 18px;
-        animation: fall linear infinite;
-    }
-    @keyframes fall {
-        to {
-            transform: translateY(110vh);
-        }
-    }
-    #lion {
-        display: none;
-        font-size: 120px;
-        margin-top: 20px;
-        animation: fadeIn 2s ease-in-out;
-    }
-    #message {
-        display: none;
-        font-size: 22px;
-        margin: 30px;
-        line-height: 1.6;
-        animation: fadeIn 3s ease-in-out;
-    }
-    @keyframes fadeIn {
-        from { opacity: 0; }
-        to { opacity: 1; }
-    }
+body{
+    margin:0;
+    background: linear-gradient(#0b1d3a,#1e3c72);
+    overflow:hidden;
+    font-family: Arial, sans-serif;
+    color:white;
+}
+#hud{
+    position:absolute;
+    top:10px;
+    left:10px;
+    font-size:22px;
+}
+#hearthud{
+    position:absolute;
+    top:10px;
+    right:10px;
+    font-size:22px;
+}
+#game{
+    position:relative;
+    width:100vw;
+    height:100vh;
+}
+#naz{
+    position:absolute;
+    bottom:70px;
+    left:20px;
+    font-size:42px;
+    transition:0.3s;
+}
+#you{
+    position:absolute;
+    bottom:65px;
+    right:20px;
+    font-size:40px;
+}
+.ice{
+    position:absolute;
+    bottom:60px;
+    width:90px;
+    height:22px;
+    background:#dff5ff;
+    border-radius:12px;
+    animation: moveIce 2.5s ease-in-out infinite alternate;
+}
+@keyframes moveIce{
+    from{transform:translateX(-20px);}
+    to{transform:translateX(20px);}
+}
+.overlay{
+    display:none;
+    position:absolute;
+    inset:0;
+    background:rgba(0,0,0,0.85);
+    justify-content:center;
+    align-items:center;
+    text-align:center;
+    padding:30px;
+}
+.overlay.show{
+    display:flex;
+}
 </style>
 </head>
 <body>
 
-<h1>Gardırop Seni Bekliyor ❄️</h1>
-<p>(Tıkla ve Narnia’ya gir)</p>
+<div id="hud">❤️❤️❤️</div>
+<div id="hearthud">💖</div>
 
-<div id="wardrobe" onclick="enterNarnia()"></div>
+<div id="game">
+    <div id="naz">👩‍🦰❄️</div>
+    <div id="you">👨‍🦱❤️</div>
 
-<div id="lion">🦁</div>
-
-<div id="message">
-    ❄️ Narnia’ya Hoş Geldin ❄️<br><br>
-    Cesaret, sadakat ve aşk…<br>
-    Hepsi burada ama en güzeli:<br><br>
-    <strong>Bu dünyaya yalnız girilmiyor 😄</strong><br>
-    <strong>İyi ki varsın Naz 💙</strong><br><br>
-    — Sen & Ben
-</div>
-
-<!-- Narnia tarzı müzik -->
-<audio id="music" loop>
-    <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_4e1c06c9a3.mp3?filename=epic-fantasy-112194.mp3" type="audio/mpeg">
-</audio>
-
-<script>
-function enterNarnia() {
-    document.getElementById("music").play();
-
-    for(let i=0; i<45; i++){
-        let snow = document.createElement("div");
-        snow.className = "snow";
-        snow.innerHTML = "❄️";
-        snow.style.left = Math.random() * window.innerWidth + "px";
-        snow.style.animationDuration = (Math.random() * 3 + 2) + "s";
-        document.body.appendChild(snow);
-    }
-
-    document.getElementById("lion").style.display = "block";
-    document.getElementById("message").style.display = "block";
-}
-</script>
-
-</body>
-</html>
+    <div class="ice" style="left:160px;"></div>
+    <div class="ice" style="left:300px;"></div>
+    <div class="ice" style
