@@ -2,82 +2,138 @@
 <html lang="tr">
 <head>
 <meta charset="UTF-8">
-<title>Naz ve Buz Denizi</title>
+<title>Narnia – Naz’ın Yolu</title>
 <style>
-body{
-    margin:0;
-    background: linear-gradient(#0b1d3a,#1e3c72);
-    overflow:hidden;
-    font-family: Arial, sans-serif;
-    color:white;
+body {
+  margin: 0;
+  background: linear-gradient(#0b1d3a, #1e3c72);
+  font-family: Arial, sans-serif;
+  overflow: hidden;
+  color: white;
 }
-#hud{
-    position:absolute;
-    top:10px;
-    left:10px;
-    font-size:22px;
+
+#game {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
 }
-#hearthud{
-    position:absolute;
-    top:10px;
-    right:10px;
-    font-size:22px;
+
+.platform {
+  position: absolute;
+  width: 80px;
+  height: 20px;
+  background: #bfe9ff;
+  border-radius: 10px;
 }
-#game{
-    position:relative;
-    width:100vw;
-    height:100vh;
+
+#player {
+  position: absolute;
+  font-size: 40px;
+  left: 50px;
+  bottom: 100px;
 }
-#naz{
-    position:absolute;
-    bottom:70px;
-    left:20px;
-    font-size:42px;
-    transition:0.3s;
+
+#emre {
+  position: absolute;
+  font-size: 40px;
+  right: 20px;
+  bottom: 80px;
 }
-#you{
-    position:absolute;
-    bottom:65px;
-    right:20px;
-    font-size:40px;
-}
-.ice{
-    position:absolute;
-    bottom:60px;
-    width:90px;
-    height:22px;
-    background:#dff5ff;
-    border-radius:12px;
-    animation: moveIce 2.5s ease-in-out infinite alternate;
-}
-@keyframes moveIce{
-    from{transform:translateX(-20px);}
-    to{transform:translateX(20px);}
-}
-.overlay{
-    display:none;
-    position:absolute;
-    inset:0;
-    background:rgba(0,0,0,0.85);
-    justify-content:center;
-    align-items:center;
-    text-align:center;
-    padding:30px;
-}
-.overlay.show{
-    display:flex;
+
+#hud {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  font-size: 20px;
 }
 </style>
 </head>
 <body>
 
-<div id="hud">❤️❤️❤️</div>
-<div id="hearthud">💖</div>
-
 <div id="game">
-    <div id="naz">👩‍🦰❄️</div>
-    <div id="you">👨‍🦱❤️</div>
+  <div id="hud">❤️❤️❤️</div>
+  <div id="player">👧</div>
+  <div id="emre">🧍‍♂️💙</div>
+</div>
 
-    <div class="ice" style="left:160px;"></div>
-    <div class="ice" style="left:300px;"></div>
-    <div class="ice" style
+<audio id="iceSound" src="https://www.soundjay.com/nature/ice-crack-01.mp3"></audio>
+<audio id="bgSound" src="https://files.freemusicarchive.org/storage-freemusicarchive-org/music/no_curator/Joshua_Eskridge/Joshua_Eskridge_-_Epilogue.mp3" loop></audio>
+
+<script>
+const player = document.getElementById("player");
+const hud = document.getElementById("hud");
+const iceSound = document.getElementById("iceSound");
+const bgSound = document.getElementById("bgSound");
+
+let x = 50;
+let y = 100;
+let lives = 3;
+let falling = false;
+
+bgSound.volume = 0.4;
+document.body.addEventListener("click", () => bgSound.play(), { once:true });
+
+document.addEventListener("keydown", e => {
+  if (falling) return;
+
+  if (e.key === "ArrowRight") {
+    x += 40;
+  }
+  if (e.key === "ArrowLeft") {
+    x -= 40;
+  }
+
+  // yanlış zamanda durma → düşme
+  if (Math.random() < 0.25) {
+    fall();
+  }
+
+  player.style.left = x + "px";
+});
+
+function fall() {
+  falling = true;
+  iceSound.play();
+  let fallInterval = setInterval(() => {
+    y -= 10;
+    player.style.bottom = y + "px";
+    if (y < -50) {
+      clearInterval(fallInterval);
+      loseLife();
+    }
+  }, 30);
+}
+
+function loseLife() {
+  lives--;
+  updateHud();
+
+  if (lives > 0) {
+    // Emre'den kalp gelsin
+    hud.innerHTML += " 💙➡️❤️";
+    setTimeout(resetPlayer, 1000);
+  } else {
+    alert("❄️ Naz düştü ama Emre hep yanında 💙");
+  }
+}
+
+function resetPlayer() {
+  x = 50;
+  y = 100;
+  player.style.left = x + "px";
+  player.style.bottom = y + "px";
+  falling = false;
+}
+
+function updateHud() {
+  hud.innerHTML = "❤️".repeat(lives);
+}
+
+// kazanma
+setInterval(() => {
+  if (x > window.innerWidth - 200) {
+    alert("🎉 Naz buzları geçti! Narnia kazandı 💙");
+    location.reload();
+  }
+}, 500);
+</script
